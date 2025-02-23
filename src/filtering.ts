@@ -2,7 +2,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const relationalQueries = async () => {
+const fitering = async () => {
   //   const result = await prisma.user.findUnique({
   //     where: {
   //       id: 1,
@@ -15,17 +15,20 @@ const relationalQueries = async () => {
 
   //   console.log(result);
 
-  const publistedPostUser = await prisma.user.findMany({
-    include: {
-      Post: {
-        where: {
+  const result = await prisma.post.findMany({
+    where: {
+      AND: [
+        {
           published: true,
         },
-      },
+        {
+          title: {
+            contains: "title",
+          },
+        },
+      ],
     },
   });
-
-  console.dir(publistedPostUser, { depth: Infinity });
 };
 
-relationalQueries();
+fitering();
